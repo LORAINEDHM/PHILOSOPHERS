@@ -33,17 +33,14 @@ typedef struct s_philo
 	pthread_mutex_t	msg_mutex;
 	pthread_mutex_t	die_mutex;
 	struct timeval	tv;
-	unsigned int	**timestamp;
-	//unsigned int	msg_usec;
-	unsigned int	start_usec;
+	unsigned int	**last_meals;
+	unsigned int	last_meal;
 	int				n_philo;
-	//int				n_forks;
 	int				die_time;
 	int				eat_time;
 	int				sleep_time;
 	int				n_times;
 	int				id_counter;
-	int				fork_id;
 	int				died;
 	int				ate_n_times;
 }				t_philo;
@@ -53,7 +50,6 @@ typedef struct s_indiv
 	int	id;
 	int	r_fork;
 	int	l_fork;
-	int fork_id;
 	unsigned int msg_usec;
 }				t_indiv;
 
@@ -79,7 +75,7 @@ typedef struct s_indiv
 int		main(int ac, char **av);
 void	ph_get_argv(int ac, char **av, t_philo *ph);
 int    ph_init(t_philo *ph);
-void ph_get_initial_timestamp(t_philo *ph);
+void ph_get_initial_last_meals(t_philo *ph);
 void* function(void* arg);
 void ph_odd_waiting(int id, int eat_time);
 
@@ -128,6 +124,7 @@ void	ph_dead_message(t_philo *ph, int id);
 void	ph_usleep(unsigned int start_usec, unsigned int time);
 int	ph_sleeping(t_philo *ph, t_indiv *p);
 int	ph_thinking(t_philo *ph, t_indiv *p);
+int	ph_one_philo(t_philo *ph, t_indiv *p);
 
 
 /*

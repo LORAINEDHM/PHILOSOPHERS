@@ -11,11 +11,11 @@ int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 	current = ph_get_time_today(&ph->tv);
 	while (id < ph->n_philo)
 	{	
-		if (ph->timestamp[id][1] == 1)
+		if (ph->last_meals[id][1] == 1)
 			id++;
 		else
 		{
-			result = (current - ph->timestamp[id][0]) / 1000;
+			result = (current - ph->last_meals[id][0]) / 1000;
 			if (result >=  (unsigned int)ph->die_time)
 			{
 				ph_dead_message(ph, id + 1);
@@ -52,7 +52,7 @@ int 	ph_check_if_ate_n_times(t_philo *ph)
 	i = 0;
 	while (i < ph->n_philo)
 	{
-		if (ph->timestamp[i][1] == 0)
+		if (ph->last_meals[i][1] == 0)
 			return (0);
 		i++;
 	}

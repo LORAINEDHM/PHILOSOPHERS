@@ -13,8 +13,7 @@ int	ph_write_message(t_philo *ph, t_indiv *p, char *str)
 	// 	pthread_mutex_unlock(&ph->msg_mutex);
 	// 	return (0);
 	// }
-	//printf("start 2 = %u\n", ph->start_usec);
-	ft_putnbr_fd((p->msg_usec - ph->start_usec)/1000, 1);
+	ft_putnbr_fd((p->msg_usec - ph->last_meal)/1000, 1);
 	write(1, "ms ", 3);
 	ft_putnbr_fd(p->id, 1);
 	write(1, " ", 1);
@@ -25,13 +24,11 @@ int	ph_write_message(t_philo *ph, t_indiv *p, char *str)
 
 void	ph_dead_message(t_philo *ph, int id)
 {
-	struct timeval current;
 	unsigned int current_usec;
 
-	current_usec = ph_get_time_today(&current);
-	//msg_usec = ph_get_time_today(&current);
+	current_usec = ph_get_time_today(&ph->tv);
 	pthread_mutex_lock(&ph->msg_mutex);
-	ft_putnbr_fd((current_usec - ph->start_usec)/1000, 1);
+	ft_putnbr_fd((current_usec - ph->last_meal)/1000, 1);
 	write(1, "ms ", 3);
 	ft_putnbr_fd(id, 1);
 	write(1, " died\n", 6);
