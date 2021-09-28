@@ -115,7 +115,8 @@ int	ph_get_philo_id(int *id_counter, pthread_mutex_t *mutex);
 ** ---------------------------------- parsing.c --------------------------------
 */
 
-int		ph_parsing(int ac, t_philo *ph);
+int		ph_parsing(int ac, char **av, t_philo *ph);
+int ph_check_if_digits(int ac, char **av);
 
 /*
 ** ---------------------------------- messages.c --------------------------------

@@ -50,8 +50,7 @@ int main(int ac, char **av)
     ph = (t_philo){};
 	
 	ph.id_counter = 1;
-	ph_get_argv(ac, av, &ph);
-	if (!(ph_parsing(ac, &ph)))
+	if (!(ph_parsing(ac, av, &ph)))
 		return (1);
     if (!(ph_malloc(&ph)))
 	{
