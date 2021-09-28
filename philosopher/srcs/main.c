@@ -19,16 +19,11 @@ int    ph_init(t_philo *ph)
 
     if (!(ph->philo = malloc(sizeof(pthread_t) * ph->n_philo)))
 		return (0);
-	pthread_mutex_init(&ph->id_mutex, NULL);
-	pthread_mutex_init(&ph->msg_mutex, NULL);
-	pthread_mutex_init(&ph->die_mutex, NULL);
 	if (!(ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo))))
 		return (0);
 	i = 0;
 	while (i < ph->n_philo)
-	{
 		pthread_mutex_init(&ph->forks[i++], NULL);
-	}
 	if (!(ph->last_meals = malloc(sizeof(unsigned int*) * ph->n_philo)))
 		return (0);
 	i = 0;
@@ -39,8 +34,6 @@ int    ph_init(t_philo *ph)
 		ph->last_meals[i][1] = 0;
 		i++;
 	}
-	ph->died = 0;
-	ph->ate_n_times = 0;
 	return (1);
 }
 
@@ -110,11 +103,17 @@ int main(int ac, char **av)
     if (!(ph_init(&ph)))
 		return(1);
 	ph_get_initial_last_meals(&ph);
+	pthread_mutex_init(&ph.id_mutex, NULL);
+	pthread_mutex_init(&ph.msg_mutex, NULL);
+	pthread_mutex_init(&ph.die_mutex, NULL);
 	if (!(ph_create_philosophers(&ph)))
 		return (1);
 	ph_check_death(&ph);
 	if (!(ph_join_philosophers(&ph)))
 		return (1);
+	free(ph.philo);
+	free(ph.forks);
+	ph_free_dtab(ph.last_meals, ph.n_philo);
 	pthread_mutex_destroy(&ph.id_mutex);
 	pthread_mutex_destroy(&ph.msg_mutex);
 	pthread_mutex_destroy(&ph.die_mutex);

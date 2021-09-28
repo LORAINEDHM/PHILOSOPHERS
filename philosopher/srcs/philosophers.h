@@ -144,6 +144,13 @@ int 	ph_check_if_ate_n_times(t_philo *ph);
 unsigned int ph_get_time_today(struct timeval *tv);
 
 
+/*
+** ---------------------------------- clean.c --------------------------------
+*/
+
+void	ph_free_dtab(unsigned int **tab, int n);
+
+
 #endif
 
 
