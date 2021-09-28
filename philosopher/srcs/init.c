@@ -7,23 +7,14 @@ int	ph_malloc(t_philo *ph)
     if (!(ph->philo = malloc(sizeof(pthread_t) * ph->n_philo)))
 		return (0);
 	if (!(ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo))))
-	{
-		ph_free_mallocs(ph->philo, NULL, NULL, 0);
-		return (0);
-	}
+		return (ph_free_mallocs(ph->philo, NULL, NULL, 0));
 	if (!(ph->last_meals = malloc(sizeof(unsigned int*) * ph->n_philo)))
-	{
-		ph_free_mallocs(ph->philo, ph->forks, NULL, 0);
-		return (0);
-	}
+		return (ph_free_mallocs(ph->philo, ph->forks, NULL, 0));
 	i = 0;
 	while (i < ph->n_philo)
 	{
 		if (!(ph->last_meals[i] = malloc(sizeof(unsigned int) * 2)))
-		{
-			ph_free_mallocs(ph->philo, ph->forks, ph->last_meals, i + 1);
-			return (0);
-		}
+			return (ph_free_mallocs(ph->philo, ph->forks, ph->last_meals, i + 1));
 		ph->last_meals[i][1] = 0;
 		i++;
 	}

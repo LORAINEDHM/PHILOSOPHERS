@@ -156,7 +156,7 @@ unsigned int ph_get_time_today(struct timeval *tv);
 */
 
 void	ph_free_dtab(unsigned int **tab, int n);
-void	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n);
+int		ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n);
 void	ph_destroy_mutex(t_philo *ph);
 
 #endif

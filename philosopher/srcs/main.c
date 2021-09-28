@@ -69,7 +69,7 @@ int main(int ac, char **av)
     if (!(ph_malloc(&ph)))
 	{
 		write(1, "Error: malloc failed\n", 21);
-		return(1);
+		return (1);
 	}
 	ph_get_initial_last_meals(&ph);
 	ph_init_mutex(&ph);

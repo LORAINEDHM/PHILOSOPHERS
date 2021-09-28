@@ -10,7 +10,7 @@ void	ph_free_dtab(unsigned int **tab, int n)
 	free(tab);
 }
 
-void	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n)
+int	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n)
 {
 	if (philo)
 		free(philo);
@@ -18,6 +18,7 @@ void	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **la
 		free(forks);
 	if (last_meals)
 		ph_free_dtab(last_meals, n);
+	return (0);
 }
 
 void	ph_destroy_mutex(t_philo *ph)
