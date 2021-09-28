@@ -72,12 +72,19 @@ typedef struct s_indiv
 /*
 ** ---------------------------------- main.c -----------------------------------
 */
+
 int		main(int ac, char **av);
 void	ph_get_argv(int ac, char **av, t_philo *ph);
-int    ph_init(t_philo *ph);
-void ph_get_initial_last_meals(t_philo *ph);
 void* function(void* arg);
 void ph_odd_waiting(int id, int eat_time);
+
+/*
+** ---------------------------------- init.c -----------------------------------
+*/
+
+int    ph_malloc(t_philo *ph);
+void	ph_init_mutex(t_philo *ph);
+void ph_get_initial_last_meals(t_philo *ph);
 
 /*
 ** ---------------------------------- libft.c -----------------------------------
@@ -149,7 +156,8 @@ unsigned int ph_get_time_today(struct timeval *tv);
 */
 
 void	ph_free_dtab(unsigned int **tab, int n);
-
+void	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n);
+void	ph_destroy_mutex(t_philo *ph);
 
 #endif
 

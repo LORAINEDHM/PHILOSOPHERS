@@ -13,29 +13,7 @@ void	ph_get_argv(int ac, char **av, t_philo *ph)
 }
 
 
-int    ph_init(t_philo *ph)
-{
-	int i;
 
-    if (!(ph->philo = malloc(sizeof(pthread_t) * ph->n_philo)))
-		return (0);
-	if (!(ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo))))
-		return (0);
-	i = 0;
-	while (i < ph->n_philo)
-		pthread_mutex_init(&ph->forks[i++], NULL);
-	if (!(ph->last_meals = malloc(sizeof(unsigned int*) * ph->n_philo)))
-		return (0);
-	i = 0;
-	while (i < ph->n_philo)
-	{
-		if (!(ph->last_meals[i] = malloc(sizeof(unsigned int) * 2)))
-			return (0);
-		ph->last_meals[i][1] = 0;
-		i++;
-	}
-	return (1);
-}
 
 void ph_odd_waiting(int id, int eat_time)
 {	
@@ -81,18 +59,6 @@ void* function(void* arg)
 	return (0);
 }
 
-void ph_get_initial_last_meals(t_philo *ph)
-{
-	int	i;
-	unsigned int current;
-
-	i = 0;
-	current = ph_get_time_today(&ph->tv);
-	while (i < ph->n_philo)
-		ph->last_meals[i++][0] = current;
-	ph->last_meal = current;
-}
-
 int main(int ac, char **av)
 {
     t_philo ph;
@@ -100,22 +66,19 @@ int main(int ac, char **av)
 	
 	ph.id_counter = 1;
 	ph_get_argv(ac, av, &ph);
-    if (!(ph_init(&ph)))
+    if (!(ph_malloc(&ph)))
+	{
+		write(1, "Error: malloc failed\n", 21);
 		return(1);
+	}
 	ph_get_initial_last_meals(&ph);
-	pthread_mutex_init(&ph.id_mutex, NULL);
-	pthread_mutex_init(&ph.msg_mutex, NULL);
-	pthread_mutex_init(&ph.die_mutex, NULL);
+	ph_init_mutex(&ph);
 	if (!(ph_create_philosophers(&ph)))
 		return (1);
 	ph_check_death(&ph);
 	if (!(ph_join_philosophers(&ph)))
 		return (1);
-	free(ph.philo);
-	free(ph.forks);
-	ph_free_dtab(ph.last_meals, ph.n_philo);
-	pthread_mutex_destroy(&ph.id_mutex);
-	pthread_mutex_destroy(&ph.msg_mutex);
-	pthread_mutex_destroy(&ph.die_mutex);
+	ph_free_mallocs(ph.philo, ph.forks, ph.last_meals, ph.n_philo);
+	ph_destroy_mutex(&ph);
 	return (0);
 }
