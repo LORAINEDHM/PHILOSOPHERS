@@ -1,20 +1,5 @@
 #include "philosophers.h"
 
-void	ph_get_argv(int ac, char **av, t_philo *ph)
-{
-	ph->n_philo = ft_atoi(av[1]);
-    ph->die_time = ft_atoi(av[2]);
-    ph->eat_time = ft_atoi(av[3]);
-    ph->sleep_time = ft_atoi(av[4]);
-	if (ac == 6)
-		ph->n_times = ft_atoi(av[5]);
-	else
-		ph->n_times = -1;
-}
-
-
-
-
 void ph_odd_waiting(int id, int eat_time)
 {	
 	if (id % 2 != 0)
@@ -66,18 +51,20 @@ int main(int ac, char **av)
 	
 	ph.id_counter = 1;
 	ph_get_argv(ac, av, &ph);
+	if (!(ph_parsing(ac, &ph)))
+		return (1);
     if (!(ph_malloc(&ph)))
 	{
 		write(1, "Error: malloc failed\n", 21);
 		return (1);
 	}
-	ph_get_initial_last_meals(&ph);
 	ph_init_mutex(&ph);
+	ph_get_initial_last_meals(&ph);
 	if (!(ph_create_philosophers(&ph)))
-		return (1);
+		return (ph_handle_error(&ph, "Error: create threads failed\n"));
 	ph_check_death(&ph);
 	if (!(ph_join_philosophers(&ph)))
-		return (1);
+		return (ph_handle_error(&ph, "Error: join threads failed\n"));
 	ph_free_mallocs(ph.philo, ph.forks, ph.last_meals, ph.n_philo);
 	ph_destroy_mutex(&ph);
 	return (0);

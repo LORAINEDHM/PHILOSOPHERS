@@ -23,22 +23,3 @@ void	ph_usleep(unsigned int start_usec, unsigned int time)
 	if (current_usec != (start_usec + (long)time))
 		usleep(100);
 }
-
-// int	ph_write_error(int error, char *str)
-// {
-// 	write(1, str, ft_strlen(str));
-// 	return (error);
-// }
-
-// int ph_handle_error()
-// {
-// 	if (ph->philo)
-// 		free (ph->philo);
-// 	if (ph->forks)
-// 		free (ph->forks);
-// 	if (ph->timestamp)
-// 		free()
-// 	if (str)
-// 		return (ph_write_error(error, str));
-// 	return ()
-// }

@@ -28,9 +28,16 @@ void	ph_destroy_mutex(t_philo *ph)
 	pthread_mutex_destroy(&ph->die_mutex);
 }
 
-// void	ph_handle_error()
-// {
-// 	ph_free_mallocs(ph.philo, ph.forks, ph.last_meals, ph.n_philo);
-// 	ph_destroy_mutex(&ph);
-// 	return (-1);
-// }
+int	ph_handle_error(t_philo *ph, char *str)
+{
+	ph_free_mallocs(ph->philo, ph->forks, ph->last_meals, ph->n_philo);
+	ph_destroy_mutex(ph);
+	write (1, str, ft_strlen(str));
+	return (1);
+}
+
+int ph_write_error(char *str)
+{
+	write(1, str, ft_strlen(str));
+	return (0);
+}

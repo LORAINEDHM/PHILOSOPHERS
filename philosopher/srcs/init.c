@@ -1,5 +1,17 @@
 #include "philosophers.h"
 
+void	ph_get_argv(int ac, char **av, t_philo *ph)
+{
+	ph->n_philo = ft_atoi(av[1]);
+    ph->die_time = ft_atoi(av[2]);
+    ph->eat_time = ft_atoi(av[3]);
+    ph->sleep_time = ft_atoi(av[4]);
+	if (ac == 6)
+		ph->n_times = ft_atoi(av[5]);
+	else
+		ph->n_times = -1;
+}
+
 int	ph_malloc(t_philo *ph)
 {
 	int	i;

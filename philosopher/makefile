@@ -6,6 +6,7 @@ NAME		=	philo
 
 SRCS		=	main.c libft.c threads.c messages.c\
 				actions.c utils.c death.c clean.c init.c\
+				parsing.c \
 
 OBJ			=	${addprefix srcs/, ${SRCS:.c=.o}}
 

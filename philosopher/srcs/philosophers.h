@@ -115,6 +115,7 @@ int	ph_get_philo_id(int *id_counter, pthread_mutex_t *mutex);
 ** ---------------------------------- parsing.c --------------------------------
 */
 
+int		ph_parsing(int ac, t_philo *ph);
 
 /*
 ** ---------------------------------- messages.c --------------------------------
@@ -158,6 +159,8 @@ unsigned int ph_get_time_today(struct timeval *tv);
 void	ph_free_dtab(unsigned int **tab, int n);
 int		ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n);
 void	ph_destroy_mutex(t_philo *ph);
+int		ph_handle_error(t_philo *ph, char *str);
+int		ph_write_error(char *str);
 
 #endif
 

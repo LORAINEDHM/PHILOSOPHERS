@@ -28,6 +28,21 @@ int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 	return (0);
 }
 
+int 	ph_check_if_ate_n_times(t_philo *ph)
+{
+	int i;
+
+	i = 0;
+	while (i < ph->n_philo)
+	{
+		if (ph->last_meals[i][1] == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+
 void ph_check_death(t_philo *ph)
 {
 	pthread_mutex_t	die_mutex;
@@ -43,18 +58,4 @@ void ph_check_death(t_philo *ph)
 		if ((ph->died = ph_check_if_died(ph, &die_mutex)))
 			return;
 	}
-}
-
-int 	ph_check_if_ate_n_times(t_philo *ph)
-{
-	int i;
-
-	i = 0;
-	while (i < ph->n_philo)
-	{
-		if (ph->last_meals[i][1] == 0)
-			return (0);
-		i++;
-	}
-	return (1);
 }
