@@ -2,12 +2,9 @@
 
 void	ph_usleep(unsigned int start_usec, unsigned int time)
 {
-	//struct timeval start;
 	struct timeval current;
-	//unsigned int start_usec;
 	unsigned int current_usec;
 
-	//start_usec = ph_get_time_today(&start);
 	current_usec = ph_get_time_today(&current);
 	while (current_usec < (start_usec + (long)time))
 	{

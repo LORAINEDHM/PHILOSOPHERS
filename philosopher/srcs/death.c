@@ -10,14 +10,19 @@ int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 	pthread_mutex_lock(die_mutex);
 	current = ph_get_time_today(&ph->tv);
 	while (id < ph->n_philo)
-	{
-		result = (current - ph->timestamp[id]) / 1000;
-		if (result >=  (unsigned int)ph->die_time)
+	{	
+		if (ph->timestamp[id][1] == 1)
+			id++;
+		else
 		{
-			ph_dead_message(ph, id + 1);
-			return (1);
+			result = (current - ph->timestamp[id][0]) / 1000;
+			if (result >=  (unsigned int)ph->die_time)
+			{
+				ph_dead_message(ph, id + 1);
+				return (1);
+			}
+			id++;
 		}
-		id++;
 	}
 	pthread_mutex_unlock(die_mutex);
 	return (0);
@@ -26,13 +31,30 @@ int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 void ph_check_death(t_philo *ph)
 {
 	pthread_mutex_t	die_mutex;
-	// int dead;
 
-	// dead = 0;
 	while (1)
 	{
+		if (ph->n_times != -1)
+		{
+			if (ph_check_if_ate_n_times(ph))
+				return ;
+		}
 		usleep(500);
 		if ((ph->died = ph_check_if_died(ph, &die_mutex)))
 			return;
 	}
+}
+
+int 	ph_check_if_ate_n_times(t_philo *ph)
+{
+	int i;
+
+	i = 0;
+	while (i < ph->n_philo)
+	{
+		if (ph->timestamp[i][1] == 0)
+			return (0);
+		i++;
+	}
+	return (1);
 }

@@ -9,29 +9,21 @@ unsigned int ph_get_time_today(struct timeval *tv)
 	return (tv_usec);
 }
 
-// void		check_if_died(t_philo *ph, t_indiv *p)
+// int	ph_write_error(int error, char *str)
 // {
-// 	unsigned int result;
-// 	int dead;
+// 	write(1, str, ft_strlen(str));
+// 	return (error);
+// }
 
-// 	dead = 0;
-// 	pthread_mutex_lock(&ph->die_mutex);
-// 	if (ph->died != 1)
-// 	{
-// 		//pthread_mutex_lock(&ph->die_mutex);
-// 		result = (ph_get_time_today(&p->tv) - p->die_timestamp)/1000;
-// 		//printf("result = %u et die_time = %u\n", result, ph->die_time);
-// 		if (result >=  (unsigned int)ph->die_time)
-// 		{
-// 			ph_dead_message(ph, p);
-// 			ph->died = 1;
-// 		}
-// 		//write(1, "hey1\n", 5);
-// 		pthread_mutex_unlock(&ph->die_mutex);
-// 	}
-// 	if (ph->died == 1)
-// 		dead = 1;
-// 	pthread_mutex_unlock(&ph->die_mutex);
-// 	if (dead)
-// 		exit(0);
+// int ph_handle_error()
+// {
+// 	if (ph->philo)
+// 		free (ph->philo);
+// 	if (ph->forks)
+// 		free (ph->forks);
+// 	if (ph->timestamp)
+// 		free()
+// 	if (str)
+// 		return (ph_write_error(error, str));
+// 	return ()
 // }

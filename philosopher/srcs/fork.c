@@ -29,7 +29,7 @@ int    ph_take_fork(t_philo *ph, t_indiv *p)
 	// 	pthread_mutex_unlock(&ph->forks[p->r_fork - 1]);
 	// 	return (0);
 	// }
-	ph->timestamp[p->id - 1] = ph_get_time_today(&ph->tv);
+	ph->timestamp[p->id - 1][0] = ph_get_time_today(&ph->tv);
 	ph_usleep(p->msg_usec, ph->eat_time * 1000);
 
 	current_usec = ph_get_time_today(&current);

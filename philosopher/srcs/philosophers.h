@@ -12,6 +12,15 @@
 # include <sys/time.h>
 # include <stdlib.h>
 
+
+
+// enum errors {
+// 	MALLOC_FAILED = 1,
+// 	PHILO_DIED = 2,
+// };
+
+
+
 /*
 ** ------------------------- Structure Definitions -----------------------------
 */
@@ -24,7 +33,7 @@ typedef struct s_philo
 	pthread_mutex_t	msg_mutex;
 	pthread_mutex_t	die_mutex;
 	struct timeval	tv;
-	unsigned int	*timestamp;
+	unsigned int	**timestamp;
 	//unsigned int	msg_usec;
 	unsigned int	start_usec;
 	int				n_philo;
@@ -36,6 +45,7 @@ typedef struct s_philo
 	int				id_counter;
 	int				fork_id;
 	int				died;
+	int				ate_n_times;
 }				t_philo;
 
 typedef struct s_indiv
@@ -67,7 +77,8 @@ typedef struct s_indiv
 ** ---------------------------------- main.c -----------------------------------
 */
 int		main(int ac, char **av);
-void    ph_init(int ac, char **av, t_philo *ph);
+void	ph_get_argv(int ac, char **av, t_philo *ph);
+int    ph_init(t_philo *ph);
 void ph_get_initial_timestamp(t_philo *ph);
 void* function(void* arg);
 void ph_odd_waiting(int id, int eat_time);
@@ -87,7 +98,6 @@ int	ft_strlen(const char *s);
 ** ---------------------------------- fork.c -----------------------------------
 */
 
-//void    ph_take_fork(t_philo *ph, t_indiv *p, pthread_mutex_t *mutex, int fork_id );
 int    ph_take_fork(t_philo *ph, t_indiv *p);
 
 /*
@@ -107,18 +117,14 @@ int	ph_get_philo_id(int *id_counter, pthread_mutex_t *mutex);
 ** ---------------------------------- messages.c --------------------------------
 */
 
-//int	ph_write_message(int p_id, unsigned int start_usec, char *str, pthread_mutex_t *mutex);
-//int	ph_write_message(int p_id, unsigned int msg_usec, int start_usec, char *str, pthread_mutex_t *mutex);
 int	ph_write_message(t_philo *ph, t_indiv *p, char *str);
 void	ph_dead_message(t_philo *ph, int id);
-//void	ph_dead_message(t_philo *ph, unsinged int msg_usec, int id);
 
 
 /*
 ** ---------------------------------- actions.c --------------------------------
 */
 
-//void	ph_usleep(unsigned int time);
 void	ph_usleep(unsigned int start_usec, unsigned int time);
 int	ph_sleeping(t_philo *ph, t_indiv *p);
 int	ph_thinking(t_philo *ph, t_indiv *p);
@@ -130,6 +136,7 @@ int	ph_thinking(t_philo *ph, t_indiv *p);
 
 void ph_check_death(t_philo *ph);
 int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex);
+int 	ph_check_if_ate_n_times(t_philo *ph);
 
 
 
