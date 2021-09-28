@@ -5,7 +5,6 @@ void    ph_init(int ac, char **av, t_philo *ph)
 {
 	int i;
 
-	i = 0;
     ph->n_philo = ft_atoi(av[1]);
     ph->die_time = ft_atoi(av[2]);
     ph->eat_time = ft_atoi(av[3]);
@@ -18,12 +17,14 @@ void    ph_init(int ac, char **av, t_philo *ph)
 	pthread_mutex_init(&ph->id_mutex, NULL);
 	pthread_mutex_init(&ph->msg_mutex, NULL);
 	pthread_mutex_init(&ph->die_mutex, NULL);
-	ph->forks = malloc(sizeof(pthread_mutex_t));
-	while (i < ph->n_philo + 1)
+	ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo));
+	i = 0;
+	while (i < ph->n_philo)
 	{
 		pthread_mutex_init(&ph->forks[i++], NULL);
 	}
 	ph->timestamp = malloc(sizeof(unsigned int) * ph->n_philo);
+	ph->died = 0;
 }
 
 void ph_odd_waiting(int id, int eat_time)
@@ -42,6 +43,7 @@ void* function(void* arg)
 	p.id = 0;
 	ph = (t_philo*)arg;
 	p.id = ph_get_philo_id(&ph->id_counter, &ph->id_mutex);
+	ph_odd_waiting(p.id, ph->eat_time);
 	while (1)
 	{
 		//printf("\n\n\n COUNTER = %d\n\n", counter);
@@ -50,11 +52,12 @@ void* function(void* arg)
 				if (counter >= ph->n_times)
 					break;
 			}
-		if (counter == 0)
-			ph_odd_waiting(p.id, ph->eat_time);
 		if (counter != 0)
-			ph_thinking(ph, &p);
-		ph_take_fork(ph, &p);
+			if (!(ph_thinking(ph, &p)))
+				return (int*)(1);
+		if ((!(ph_take_fork(ph, &p))) ||
+			(!(ph_sleeping(ph, &p))))
+			return (int*)(1);
 		counter++;
 	}
 	return (0);
@@ -69,7 +72,9 @@ void ph_get_initial_timestamp(t_philo *ph)
 	current = ph_get_time_today(&ph->tv);
 	while (i < ph->n_philo)
 		ph->timestamp[i++] = current;
-	ph->start_usec = ph_get_time_today(&ph->tv);
+	//ph->start_usec = ph_get_time_today(&ph->tv);
+	ph->start_usec = current;
+	//printf("start 1 = %u\n", ph->start_usec);
 }
 
 int main(int ac, char **av)
@@ -95,8 +100,7 @@ int main(int ac, char **av)
 	ph_get_initial_timestamp(&ph);
 	if (!(ph_create_philosophers(&ph)))
 		return (0);
-	if (!(check_death(&ph)))
-		exit(0);
+	ph_check_death(&ph);
 	if (!(ph_join_philosophers(&ph)))
 		return (0);
 	pthread_mutex_destroy(&ph.id_mutex);

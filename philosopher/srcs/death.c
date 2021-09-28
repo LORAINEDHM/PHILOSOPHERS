@@ -1,6 +1,6 @@
 #include "philosophers.h"
 
-int		check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
+int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 {
 	unsigned int result;
 	unsigned int current;
@@ -23,17 +23,16 @@ int		check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 	return (0);
 }
 
-int check_death(t_philo *ph)
+void ph_check_death(t_philo *ph)
 {
 	pthread_mutex_t	die_mutex;
-	int dead;
+	// int dead;
 
-	dead = 0;
-	while (dead != 1)
+	// dead = 0;
+	while (1)
 	{
 		usleep(500);
-		if ((dead = check_if_died(ph, &die_mutex)))
-			exit(0);
+		if ((ph->died = ph_check_if_died(ph, &die_mutex)))
+			return;
 	}
-	return (0);
 }

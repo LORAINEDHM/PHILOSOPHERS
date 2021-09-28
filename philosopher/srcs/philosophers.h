@@ -35,6 +35,7 @@ typedef struct s_philo
 	int				n_times;
 	int				id_counter;
 	int				fork_id;
+	int				died;
 }				t_philo;
 
 typedef struct s_indiv
@@ -42,6 +43,7 @@ typedef struct s_indiv
 	int	id;
 	int	r_fork;
 	int	l_fork;
+	int fork_id;
 	unsigned int msg_usec;
 }				t_indiv;
 
@@ -86,8 +88,7 @@ int	ft_strlen(const char *s);
 */
 
 //void    ph_take_fork(t_philo *ph, t_indiv *p, pthread_mutex_t *mutex, int fork_id );
-void    ph_take_fork(t_philo *ph, t_indiv *p);
-void    ph_release_fork(t_philo *philo);
+int    ph_take_fork(t_philo *ph, t_indiv *p);
 
 /*
 ** ---------------------------------- threads.c -----------------------------------
@@ -108,7 +109,7 @@ int	ph_get_philo_id(int *id_counter, pthread_mutex_t *mutex);
 
 //int	ph_write_message(int p_id, unsigned int start_usec, char *str, pthread_mutex_t *mutex);
 //int	ph_write_message(int p_id, unsigned int msg_usec, int start_usec, char *str, pthread_mutex_t *mutex);
-int	ph_write_message(t_indiv *p, int start_usec, char *str, pthread_mutex_t *mutex);
+int	ph_write_message(t_philo *ph, t_indiv *p, char *str);
 void	ph_dead_message(t_philo *ph, int id);
 //void	ph_dead_message(t_philo *ph, unsinged int msg_usec, int id);
 
@@ -119,16 +120,16 @@ void	ph_dead_message(t_philo *ph, int id);
 
 //void	ph_usleep(unsigned int time);
 void	ph_usleep(unsigned int start_usec, unsigned int time);
-void	ph_sleeping(t_philo *ph, t_indiv *p);
-void	ph_thinking(t_philo *ph, t_indiv *p);
+int	ph_sleeping(t_philo *ph, t_indiv *p);
+int	ph_thinking(t_philo *ph, t_indiv *p);
 
 
 /*
 ** ---------------------------------- death.c --------------------------------
 */
 
-int check_death(t_philo *ph);
-int		check_if_died(t_philo *ph, pthread_mutex_t *die_mutex);
+void ph_check_death(t_philo *ph);
+int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex);
 
 
 

@@ -1,37 +1,25 @@
 #include "philosophers.h"
 
-// int	ph_write_message(int timestamp, int id, char *str, pthread_mutex_t *mutex)
-// int	ph_write_message(t_philo *ph, t_indiv *p, char *str, pthread_mutex_t *mutex)
-// {
-// 	struct timeval current;
-// 	//unsigned int current_usec;
-
-// 	ph->msg_usec = ph_get_time_today(&current);
-// 	check_if_died(ph, p);
-// 	pthread_mutex_lock(mutex);
-// 	ft_putnbr_fd((ph->msg_usec - ph->start_usec)/1000, 1);
-// 	write(1, "ms ", 3);
-// 	ft_putnbr_fd(p->id, 1);
-// 	write(1, " ", 1);
-// 	write(1, str, ft_strlen(str));
-// 	pthread_mutex_unlock(mutex);
-// 	return (1);
-// }
-
-int	ph_write_message(t_indiv *p, int start_usec, char *str, pthread_mutex_t *mutex)
+int	ph_write_message(t_philo *ph, t_indiv *p, char *str)
 {
 	struct timeval current;
-	//unsigned int current_usec;
 
+	if (ph->died == 1)
+		return (0);
+	pthread_mutex_lock(&ph->msg_mutex);
 	p->msg_usec = ph_get_time_today(&current);
-	//printf("msg_usec = %u\n", p->msg_usec);
-	pthread_mutex_lock(mutex);
-	ft_putnbr_fd((p->msg_usec - start_usec)/1000, 1);
+	// if (ph->died == 1)
+	// {
+	// 	pthread_mutex_unlock(&ph->msg_mutex);
+	// 	return (0);
+	// }
+	//printf("start 2 = %u\n", ph->start_usec);
+	ft_putnbr_fd((p->msg_usec - ph->start_usec)/1000, 1);
 	write(1, "ms ", 3);
 	ft_putnbr_fd(p->id, 1);
 	write(1, " ", 1);
 	write(1, str, ft_strlen(str));
-	pthread_mutex_unlock(mutex);
+	pthread_mutex_unlock(&ph->msg_mutex);
 	return (1);
 }
 
