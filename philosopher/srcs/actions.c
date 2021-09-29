@@ -32,15 +32,25 @@ int    ph_take_fork(t_philo *ph, t_indiv *p)
 	}
 	p->r_fork = p->id;
 	pthread_mutex_lock(&ph->forks[p->r_fork - 1]);
-	if ((!(ph_write_message(ph, p, "has taken a fork\n"))) ||
-		(!(ph_write_message(ph, p, "is eating\n"))))
+	if (!(ph_write_message(ph, p, "has taken a fork\n")))
+	{
+		pthread_mutex_unlock(&ph->forks[p->l_fork - 1]);
+		pthread_mutex_unlock(&ph->forks[p->r_fork - 1]);
+		return (0);
+	}
+	//pthread_mutex_lock(&ph->eat_mutex);
+	ph->last_meals[p->id - 1][0] = ph_get_time_today(&ph->tv);
+	//printf("eating %d = %u\n", p->id, ph->last_meals[p->id - 1][0]);
+	if (!(ph_write_message(ph, p, "is eating\n")))
 	{
 		pthread_mutex_unlock(&ph->forks[p->l_fork - 1]);
 		pthread_mutex_unlock(&ph->forks[p->r_fork - 1]);
 		return (0);
 	}
 	ph->last_meals[p->id - 1][0] = ph_get_time_today(&ph->tv);
-	ph_usleep(p->msg_usec, ph->eat_time * 1000);
+	//pthread_mutex_unlock(&ph->eat_mutex);
+	//ph_usleep(p->msg_usec, ph->eat_time * 1000);
+	ph_usleep(ph_get_time_today(&ph->tv), ph->eat_time * 1000);
 	pthread_mutex_unlock(&ph->forks[p->l_fork - 1]);
 	pthread_mutex_unlock(&ph->forks[p->r_fork - 1]);
 	return (1);

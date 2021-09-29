@@ -32,6 +32,7 @@ typedef struct s_philo
 	pthread_mutex_t	id_mutex;
 	pthread_mutex_t	msg_mutex;
 	pthread_mutex_t	die_mutex;
+	pthread_mutex_t eat_mutex;
 	struct timeval	tv;
 	unsigned int	**last_meals;
 	unsigned int	last_meal;

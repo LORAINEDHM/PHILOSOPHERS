@@ -43,6 +43,7 @@ void	ph_init_mutex(t_philo *ph)
 	pthread_mutex_init(&ph->id_mutex, NULL);
 	pthread_mutex_init(&ph->msg_mutex, NULL);
 	pthread_mutex_init(&ph->die_mutex, NULL);
+	pthread_mutex_init(&ph->eat_mutex, NULL);
 }
 
 void ph_get_initial_last_meals(t_philo *ph)

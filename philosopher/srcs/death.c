@@ -3,24 +3,29 @@
 int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 {
 	unsigned int result;
-	unsigned int current;
+	//unsigned int current;
 	int id;
 
 	id = 0;
 	pthread_mutex_lock(die_mutex);
-	current = ph_get_time_today(&ph->tv);
+//	current = ph_get_time_today(&ph->tv);
 	while (id < ph->n_philo)
 	{	
+	//	pthread_mutex_lock(&ph->eat_mutex);
 		if (ph->last_meals[id][1] == 1)
 			id++;
 		else
 		{
-			result = (current - ph->last_meals[id][0]) / 1000;
-			if (result >=  (unsigned int)ph->die_time)
+			result = (ph_get_time_today(&ph->tv) - ph->last_meals[id][0]) / 1000;
+			if (result > (unsigned int)ph->die_time)
 			{
+				//printf("death %d = %u  | result = %u\n", id + 1, ph->last_meals[id][0], result);
+				//pthread_mutex_lock(die_mutex);
 				ph_dead_message(ph, id + 1);
+				pthread_mutex_unlock(die_mutex);
 				return (1);
 			}
+			//pthread_mutex_unlock(&ph->eat_mutex);
 			id++;
 		}
 	}

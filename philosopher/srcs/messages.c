@@ -4,15 +4,20 @@ int	ph_write_message(t_philo *ph, t_indiv *p, char *str)
 {
 	struct timeval current;
 
-	if (ph->died == 1)
-		return (0);
+	//pthread_mutex_lock(&ph->die_mutex);
+	//if (ph->died == 1)
+	//{
+	//	pthread_mutex_unlock(&ph->die_mutex);
+	//	return (0);
+	//}
+	//pthread_mutex_unlock(&ph->die_mutex);
 	pthread_mutex_lock(&ph->msg_mutex);
 	p->msg_usec = ph_get_time_today(&current);
-	// if (ph->died == 1)
-	// {
-	// 	pthread_mutex_unlock(&ph->msg_mutex);
-	// 	return (0);
-	// }
+	if (ph->died == 1)
+	 {
+	 	pthread_mutex_unlock(&ph->msg_mutex);
+	 	return (0);
+	 }
 	ft_putnbr_fd((p->msg_usec - ph->last_meal)/1000, 1);
 	write(1, "ms ", 3);
 	ft_putnbr_fd(p->id, 1);
