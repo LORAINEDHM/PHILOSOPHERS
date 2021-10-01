@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/01 13:46:18 by lduhamel          #+#    #+#             */
+/*   Updated: 2021/10/01 14:42:23 by lduhamel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	ph_get_argv(int ac, char **av, t_philo *ph)
 {
 	ph->n_philo = ft_atoi(av[1]);
-    ph->die_time = ft_atoi(av[2]);
-    ph->eat_time = ft_atoi(av[3]);
-    ph->sleep_time = ft_atoi(av[4]);
+	ph->die_time = ft_atoi(av[2]);
+	ph->eat_time = ft_atoi(av[3]);
+	ph->sleep_time = ft_atoi(av[4]);
 	if (ac == 6)
 		ph->n_times = ft_atoi(av[5]);
 	else
@@ -16,17 +28,22 @@ int	ph_malloc(t_philo *ph)
 {
 	int	i;
 
-    if (!(ph->philo = malloc(sizeof(pthread_t) * ph->n_philo)))
+	ph->philo = malloc(sizeof(pthread_t) * ph->n_philo);
+	if (!ph->philo)
 		return (0);
-	if (!(ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo))))
+	ph->forks = malloc(sizeof(pthread_mutex_t) * (ph->n_philo));
+	if (!ph->forks)
 		return (ph_free_mallocs(ph->philo, NULL, NULL, 0));
-	if (!(ph->last_meals = malloc(sizeof(unsigned int*) * ph->n_philo)))
+	ph->last_meals = malloc(sizeof(unsigned int *) * ph->n_philo);
+	if (!ph->last_meals)
 		return (ph_free_mallocs(ph->philo, ph->forks, NULL, 0));
 	i = 0;
 	while (i < ph->n_philo)
 	{
-		if (!(ph->last_meals[i] = malloc(sizeof(unsigned int) * 2)))
-			return (ph_free_mallocs(ph->philo, ph->forks, ph->last_meals, i + 1));
+		ph->last_meals[i] = malloc(sizeof(unsigned int) * 2);
+		if (!ph->last_meals[i])
+			return (ph_free_mallocs(ph->philo, ph->forks,
+					ph->last_meals, i + 1));
 		ph->last_meals[i][1] = 0;
 		i++;
 	}
@@ -35,7 +52,7 @@ int	ph_malloc(t_philo *ph)
 
 void	ph_init_mutex(t_philo *ph)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < ph->n_philo)
@@ -46,9 +63,9 @@ void	ph_init_mutex(t_philo *ph)
 	pthread_mutex_init(&ph->eat_mutex, NULL);
 }
 
-void ph_get_initial_last_meals(t_philo *ph)
+void	ph_get_initial_last_meals(t_philo *ph)
 {
-	int	i;
+	int				i;
 	unsigned int	current;
 
 	i = 0;

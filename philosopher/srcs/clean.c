@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/01 12:48:00 by lduhamel          #+#    #+#             */
+/*   Updated: 2021/10/01 12:48:37 by lduhamel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	ph_free_dtab(unsigned int **tab, int n)
@@ -10,7 +22,8 @@ void	ph_free_dtab(unsigned int **tab, int n)
 	free(tab);
 }
 
-int	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks, unsigned int **last_meals, int n)
+int	ph_free_mallocs(pthread_t *philo, pthread_mutex_t *forks,
+	unsigned int **last_meals, int n)
 {
 	if (philo)
 		free(philo);
@@ -36,7 +49,7 @@ int	ph_handle_error(t_philo *ph, char *str)
 	return (1);
 }
 
-int ph_write_error(char *str)
+int	ph_write_error(char *str)
 {
 	write(1, str, ft_strlen(str));
 	return (0);

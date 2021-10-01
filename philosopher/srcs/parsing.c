@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/01 12:51:51 by lduhamel          #+#    #+#             */
+/*   Updated: 2021/10/01 12:55:54 by lduhamel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-int ph_check_if_digits(int ac, char **av)
+int	ph_check_if_digits(int ac, char **av)
 {
 	int	i;
 	int	j;
@@ -20,11 +32,8 @@ int ph_check_if_digits(int ac, char **av)
 	return (1);
 }
 
-
-
-int ph_parsing(int ac, char **av, t_philo *ph)
+int	ph_parsing(int ac, char **av, t_philo *ph)
 {
-	(void)ph;
 	if (ac > 6)
 		return (ph_write_error("Error: wrong number of arguments\n"));
 	if (!(ph_check_if_digits(ac, av)))
@@ -33,7 +42,7 @@ int ph_parsing(int ac, char **av, t_philo *ph)
 	if (ph->n_philo > 200 || ph->n_philo <= 0)
 		return (ph_write_error("Error: wrong number of philo\n"));
 	if (ac == 6 && ph->n_times < 0)
-		return (ph_write_error("Error: wrong number of times each philo must eat\n"));
-	//printf("eat_time = %d  |  die_time = %d  |  sleep_time = %d   | n_time = %d\n", ph->eat_time, ph->die_time, ph->sleep_time, ph->n_times);
+		return (ph_write_error
+			("Error: wrong number of times each philo must eat\n"));
 	return (1);
 }

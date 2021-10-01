@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/01 14:42:31 by lduhamel          #+#    #+#             */
+/*   Updated: 2021/10/01 14:42:31 by lduhamel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 int	ft_isdigit(int c)
@@ -73,18 +85,4 @@ void	ft_putnbr_fd(int nb, int fd)
 	{
 		ft_putchar_fd(nb + '0', fd);
 	}
-}
-
-int	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i])
-	{
-		i++;
-	}
-	return (i);
 }

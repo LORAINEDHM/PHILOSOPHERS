@@ -1,6 +1,6 @@
 CC			=	gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -Isrcs -fsanitize=address \
+CFLAGS		=	-Wall -Wextra -Werror -Isrcs \
 
 NAME		=	philo
 

@@ -1,31 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   death.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/01 12:51:07 by lduhamel          #+#    #+#             */
+/*   Updated: 2021/10/01 12:51:09 by lduhamel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
+int	ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 {
-	unsigned int result;
-	//unsigned int current;
-	int id;
+	unsigned int	result;
+	int				id;
 
 	id = 0;
 	pthread_mutex_lock(die_mutex);
-//	current = ph_get_time_today(&ph->tv);
 	while (id < ph->n_philo)
 	{	
-	//	pthread_mutex_lock(&ph->eat_mutex);
 		if (ph->last_meals[id][1] == 1)
 			id++;
 		else
 		{
-			result = (ph_get_time_today(&ph->tv) - ph->last_meals[id][0]) / 1000;
+			result = (ph_get_time_today(&ph->tv) - ph->last_meals[id][0])
+				/ 1000;
 			if (result > (unsigned int)ph->die_time)
 			{
-				//printf("death %d = %u  | result = %u\n", id + 1, ph->last_meals[id][0], result);
-				//pthread_mutex_lock(die_mutex);
 				ph_dead_message(ph, id + 1);
 				pthread_mutex_unlock(die_mutex);
 				return (1);
 			}
-			//pthread_mutex_unlock(&ph->eat_mutex);
 			id++;
 		}
 	}
@@ -33,9 +40,9 @@ int		ph_check_if_died(t_philo *ph, pthread_mutex_t *die_mutex)
 	return (0);
 }
 
-int 	ph_check_if_ate_n_times(t_philo *ph)
+int	ph_check_if_ate_n_times(t_philo *ph)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < ph->n_philo)
@@ -47,8 +54,7 @@ int 	ph_check_if_ate_n_times(t_philo *ph)
 	return (1);
 }
 
-
-void ph_check_death(t_philo *ph)
+void	ph_check_death(t_philo *ph)
 {
 	pthread_mutex_t	die_mutex;
 
@@ -60,7 +66,8 @@ void ph_check_death(t_philo *ph)
 				return ;
 		}
 		usleep(500);
-		if ((ph->died = ph_check_if_died(ph, &die_mutex)))
-			return;
+		ph->died = ph_check_if_died(ph, &die_mutex);
+		if (ph->died)
+			return ;
 	}
 }
