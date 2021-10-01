@@ -6,7 +6,7 @@
 /*   By: lduhamel <lduhamel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 12:51:51 by lduhamel          #+#    #+#             */
-/*   Updated: 2021/10/01 12:55:54 by lduhamel         ###   ########.fr       */
+/*   Updated: 2021/10/01 14:50:16 by lduhamel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	ph_parsing(int ac, char **av, t_philo *ph)
 	if (!(ph_check_if_digits(ac, av)))
 		return (ph_write_error("Error: arguments not valid\n"));
 	ph_get_argv(ac, av, ph);
+	if (ph->eat_time < 0 || ph->die_time < 0 || ph->sleep_time < 0)
+		return (ph_write_error("Error: unvalid times\n"));
 	if (ph->n_philo > 200 || ph->n_philo <= 0)
 		return (ph_write_error("Error: wrong number of philo\n"));
 	if (ac == 6 && ph->n_times < 0)
